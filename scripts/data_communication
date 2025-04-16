@@ -1,0 +1,13 @@
+#feature importance usinf decision tree
+importance = final_model_dt.named_steps["decisiontreeclassifier"].feature_importances_
+features = X.columns
+feat_imp = pd.Series(importance, features).sort_values()
+feat_imp.head()
+
+---
+
+# Creating horizontal bar chart of feature importances(showing which features affect  y, "severe_damage")
+feat_imp.plot(kind="barh")
+plt.xlabel("Gini Importance")
+plt.ylabel("Feature")
+plt.title("Kavrepalanchok Decision Tree, Feature Importance");
