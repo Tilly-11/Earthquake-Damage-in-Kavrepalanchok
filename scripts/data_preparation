@@ -1,0 +1,51 @@
+#Connecting to Nepal sqlite database
+%load_ext sql
+%sql sqlite:\\\(file_path )
+
+---
+  
+# Building `wrangle` function here
+def wrangle(file_path):
+    #connecting to file
+    conn = sqlite3.connect(file_path)
+    
+    #sql query
+    query = """
+    SELECT 
+        DISTINCT i.building_id as b_id,
+        b.*,
+        d.damage_grade
+    FROM id_map as i
+    JOIN building_structure as b ON i.building_id = b.building_id
+    JOIN building_damage as d ON i.building_id = d.building_id
+    WHERE district_id = 3
+    """ 
+   
+    #reading into dataframe
+    df = pd.read_sql(query, conn, index_col="b_id")
+    
+    #assigning 'damage_grade' greater than 3 to "severe_damage"
+    df["damage_grade"] = df["damage_grade"].str[-1].astype(int)
+    df["severe_damage"] = (df["damage_grade"] > 3).astype(int)
+    
+    #leakages 
+    drop_leakes = [c for c in df.columns if "post_eq" in c]
+    
+    #droping "damage_grade"
+    drop_leakes.append("damage_grade")
+    
+    #droping building_id
+    drop_leakes.append("building_id")
+    
+    #droping "count_floors_pre_eq"
+    drop_leakes.append("count_floors_pre_eq")
+    
+    #droping columns with leakages
+    df.drop(columns = drop_leakes, inplace=True)
+    
+    
+    return df
+
+    ---
+
+          
