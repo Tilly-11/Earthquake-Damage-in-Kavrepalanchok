@@ -1,0 +1,49 @@
+#Checking the balance of the data (We are building a binary classification model)
+# Ploting value counts of `"severe_damage"`
+df["severe_damage"].value_counts(normalize=True).plot(kind="bar")
+plt.xlabel("Severe Damage")
+plt.ylabel("Relative Frequency")
+plt.title("Kavrepalanchok, Class Balance");
+
+___
+
+#creating a boxplot that shows the distributions of the "plinth_area_sq_ft" column for both groups in the "severe_damage" column
+sns.boxplot(x="severe_damage", y="plinth_area_sq_ft", data=df)
+plt.xlabel("Severe Damage")
+plt.ylabel("Plinth Area [sq. ft.]")
+plt.title("Kavrepalanchok, Plinth Area vs Building Damage")
+
+---
+
+#creating a pivot table of df where the index is "roof_type" and the values come from the "severe_damage" column, aggregated by the mean.
+roof_pivot = pd.pivot_table(
+    df, index="roof_type", values="severe_damage", aggfunc= np.mean
+).sort_values(by="severe_damage")
+roof_pivot
+
+---
+
+#creating feature metrix X and target variable y
+target = "severe_damage"
+X = df.drop(columns=target)
+y = df[target]
+print("X shape:", X.shape)
+print("y shape:", y.shape)
+
+---
+
+#creating a train, test split.
+X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, random_state=42)
+print("X_train shape:", X_train.shape)
+print("y_train shape:", y_train.shape)
+print("X_val shape:", X_val.shape)
+print("y_val shape:", y_val.shape)
+
+---
+
+#Calcuting baseline accuracy for model
+acc_baseline = y_train.value_counts(normalize=True).max()
+print("Baseline Accuracy:", round(acc_baseline, 2))
+
+---
+
