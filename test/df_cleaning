@@ -1,0 +1,18 @@
+#leakages 
+drop_leakes = [c for c in df.columns if "post_eq" in c]
+drop_leakes
+
+---
+
+#Multicolinearity test on numbers data type
+correlation = df.drop(columns="severe_damage").select_dtypes("number").corr()
+sns.heatmap(correlation);
+
+---
+
+#correlation between count_floors_pre_eq , height_ft_pre_eq and "severe_damage"
+tests = df[["height_ft_pre_eq","severe_damage"]]
+tests.corr()
+  
+test = df[["count_floors_pre_eq","severe_damage"]]
+test.corr()
