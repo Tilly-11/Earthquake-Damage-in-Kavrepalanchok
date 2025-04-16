@@ -1,0 +1,58 @@
+#creating a model pipeline for logistic regression.
+model_lr = make_pipeline(
+    OneHotEncoder(use_cat_names=True),
+    LogisticRegression(max_iter=3000)
+)
+model_lr.fit(X_train, y_train)
+
+---
+
+#calculating train and validation accuracy score
+lr_train_acc = model_lr.score(X_train,y_train)
+lr_val_acc = model_lr.score(X_val, y_val)
+
+print("Logistic Regression, Training Accuracy Score:", lr_train_acc)
+print("Logistic Regression, Validation Accuracy Score:", lr_val_acc)
+
+---
+
+#hypertuning decision tree model(data pipeline)
+depth_hyperparams = range(1, 16)
+training_acc = []
+validation_acc = []
+for d in depth_hyperparams:
+    model_dt = make_pipeline(
+        OrdinalEncoder(),
+        DecisionTreeClassifier(random_state=42, max_depth=d)
+    )
+    model_dt.fit(X_train, y_train)
+    training_acc.append(model_dt.score(X_train, y_train))
+    validation_acc.append(model_dt.score(X_val, y_val))
+
+---
+#creating variables for training_acc and validation_acc series
+training = pd.Series(training_acc, index=depth_hyperparams).sort_values()
+validation = pd.Series(validation_acc, index=depth_hyperparams).sort_values()
+
+---
+
+#plotting traing and validation accuracy scores
+plt.plot(training, color="grey", label="training")
+plt.plot(validation, color="green", label="validation")
+plt.xticks(range(1, 16, 1), labels=training.index)
+plt.xlabel("Max Depth")
+plt.ylabel("Accuracy Score")
+plt.title("Validation Curve, Decision Tree Model")
+plt.legend()
+
+---
+
+#building final decision tree model
+final_model_dt = make_pipeline(
+    OrdinalEncoder(),
+    DecisionTreeClassifier(max_depth=10, random_state=42)
+)
+final_model_dt.fit(X_train, y_train)
+
+---
+
