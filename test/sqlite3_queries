@@ -1,0 +1,35 @@
+--checking for unique districts
+%%sql
+SELECT DISTINCT district_id
+FROM id_map
+LIMIT 10;
+
+---
+
+--checking for the total number of observations
+%%sql
+SELECT COUNT(*) as district_1_count
+FROM id_map
+WHERE district_id = 1;
+
+---
+
+--Investigating the number of observations in Kavrepalanchok
+%%sql
+SELECT COUNT(*) as district_3_count
+FROM id_map
+WHERE district_id = 3;
+
+---
+
+--selecting needed columns across different tables
+%%sql
+SELECT 
+    DISTINCT i.building_id as b_id,
+    b.*,
+    d.damage_grade
+FROM id_map as i
+JOIN building_structure as b ON i.building_id = b.building_id
+JOIN building_damage as d ON i.building_id = d.building_id
+WHERE district_id = 3
+LIMIT 5;
