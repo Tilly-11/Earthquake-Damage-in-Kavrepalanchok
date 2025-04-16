@@ -1,9 +1,7 @@
 # Earthquake Damage Prediction – Nepal 2015 🏗️
 
 In this project we build a classification model to predict building damage for the district of Kavrepalanchok.
-This project focuses on using real-world data from Open Data Nepal to build machine learning models that predict the extent of building damage caused by the 2015 Nepal Earthquake. The analysis centers on data from the Gorkha district—where the quake originated—with additional data from Ramechhap to enhance the model's robustness.
-
----
+This project focuses on using real-world data from Open Data Nepal to build machine learning models that predict the extent of building damage caused by the 2015 Nepal Earthquake.
 
 **📘 Project Overview**
 
