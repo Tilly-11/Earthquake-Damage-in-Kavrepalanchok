@@ -1,0 +1,15 @@
+#making predictions with test dataset
+X_test = pd.read_csv("data/kavrepalanchok-test-features.csv", index_col="b_id")
+y_test_pred = final_model_dt.predict(X_test)
+y_test_pred[:5]
+
+---
+  
+#checking for the column arrangement, it may affect model performance
+X_train.columns
+X_test.columns
+
+---
+#creating a prediction series
+submission = pd.Series(y_test_pred)
+
